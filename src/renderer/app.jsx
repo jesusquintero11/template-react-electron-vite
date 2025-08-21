@@ -7,7 +7,7 @@ import { themeStore } from "./store/themeSchema"
 import { themes } from "./enums/theme"
 
 const App = () => {
-    const { theme, changeTheme } = themeStore()
+    const { theme, changeTheme, resolvedTheme } = themeStore()
 
     return (
         <ThemeApp>
@@ -20,7 +20,7 @@ const App = () => {
                         <img src="/react.svg" alt="react" className="aspect-square w-full p-4" />
                     </div>
                     <div className="aspect-square w-32 flex items-center justify-center">
-                        <img src="/electron.svg" alt="react" className="aspect-square w-full p-4" />
+                        <img src={resolvedTheme === themes.DARK ? "/electron-dark-mode.svg" : "/electron.svg"} alt="react" className="aspect-square w-full p-4" />
                     </div>
                     <div className="aspect-square w-32 flex items-center justify-center">
                         <img src="/tailwind.svg" alt="tailwind" className="aspect-square w-full p-4" />
