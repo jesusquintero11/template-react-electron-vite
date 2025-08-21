@@ -1,6 +1,11 @@
+# Levantar el proyecto
+
+- npm i 
+- npm start
+
 # Template de Electron con React
 
-## Template base de elctron forge con vite
+## Template base de electron forge con vite
 
 ### Comando para crea el template base
 
