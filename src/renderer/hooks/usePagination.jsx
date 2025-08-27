@@ -4,37 +4,24 @@ export const usePagination = (filter, totalPages) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [customCurrentPage, setCustomCurrentPage] = useState(1)
 
-    const isFiltered = !!filter;
+    const isFiltered = filter.trim().length > 0;
     const page = isFiltered ? customCurrentPage : currentPage;
+
+    const setActivePage = isFiltered ? setCustomCurrentPage : setCurrentPage;
 
     const previous = () => {
         if (page <= 1) return
-
-        if (isFiltered) {
-            setCustomCurrentPage(preValue => preValue - 1)
-        } else {
-            setCurrentPage(preValue => preValue - 1)
-        }
+        setActivePage(preValue => preValue - 1)
     }
 
     const next = () => {
-        if (page >= totalPages) return 
-
-        if (isFiltered) {
-            setCustomCurrentPage(preValue => preValue + 1)
-        } else {
-            setCurrentPage(preValue => preValue + 1)
-        }
+        if (page >= totalPages) return
+        setActivePage(preValue => preValue + 1)
     }
 
     const goToPage = (pageNumber) => {
         if (!(pageNumber >= 1 && pageNumber <= totalPages)) return
-
-        if (isFiltered) {
-            setCustomCurrentPage(pageNumber)
-        } else {
-            setCurrentPage(pageNumber);
-        }
+        setActivePage(pageNumber)
     }
 
     const isActive = (index) => page === index + 1
@@ -49,7 +36,7 @@ export const usePagination = (filter, totalPages) => {
         if (totalPages < currentPage && !isFiltered) {
             setCurrentPage(totalPages);
         }
-    }, [totalPages])
+    }, [totalPages, isFiltered])
 
     return {
         page,
