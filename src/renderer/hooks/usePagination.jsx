@@ -2,12 +2,11 @@ import { useState, useEffect } from "react"
 
 export const usePagination = (filter, totalPages) => {
     const [currentPage, setCurrentPage] = useState(1)
-    const [customCurrentPage, setCustomCurrentPage] = useState(1)
+    const [filteredCurrentPage, setFilteredCurrentPage] = useState(1)
 
-    const isFiltered = filter.trim().length > 0;
-    const page = isFiltered ? customCurrentPage : currentPage;
-
-    const setActivePage = isFiltered ? setCustomCurrentPage : setCurrentPage;
+    const isFiltered = filter?.trim()?.length > 0;
+    const page = isFiltered ? filteredCurrentPage : currentPage;
+    const setActivePage = isFiltered ? setFilteredCurrentPage : setCurrentPage;
 
     const previous = () => {
         if (page <= 1) return
@@ -27,16 +26,22 @@ export const usePagination = (filter, totalPages) => {
     const isActive = (index) => page === index + 1
 
     useEffect(() => {
-        if (!isFiltered) {
-            setCustomCurrentPage(1);
+        if (isFiltered) {
+            setFilteredCurrentPage(1);
         }
-    }, [isFiltered])
+    }, [isFiltered, setFilteredCurrentPage])
 
     useEffect(() => {
-        if (totalPages < currentPage && !isFiltered) {
-            setCurrentPage(totalPages);
+        // En caso de paginación en tiemporeal, evitar que la pagina actual sea mayor al total de paginas
+        if (totalPages === 0) {
+            return;
         }
-    }, [totalPages, isFiltered])
+
+        if (totalPages < page) {
+            setActivePage(totalPages);
+        }
+
+    }, [totalPages, page, setActivePage])
 
     return {
         page,
